@@ -8,29 +8,41 @@ function Calculator() {
   // hook
   const [showValue, setShowValue] = useState("");
   const preValue = useRef("");
+  const allHistorySave = useRef("");
   useEffect(() => {
     preValue.current = showValue;
   }, [showValue]);
+  // handle event
   const handleNumberClick = (e: React.MouseEvent): void => {
     e.preventDefault();
-    const value = (e.target as HTMLInputElement).textContent?.toString();
-    setShowValue((pre) => pre + value);
-    if (value === "=") {
-      setShowValue(eval(showValue).toString());
-      localStorage.setItem("history", `eval(showValue).toString()`);
-    } else if (value?.includes("<-")) {
-      setShowValue((pre) => pre.slice(0, -1));
+    try {
+      const value = (e.target as HTMLInputElement).textContent?.toString();
+      setShowValue((pre) => pre + value);
+      if (value === "=") {
+        setShowValue(eval(showValue).toString());
+        allHistorySave.current += `${preValue.current} = ${eval(
+          showValue
+        ).toString()} \n`;
+        localStorage.setItem("showValue", allHistorySave.current);
+      } else if (value?.includes("<")) {
+        setShowValue((pre) => pre.slice(0, -1));
+      }
+      if (value === "p") {
+        setShowValue("");
+      }
+    } catch (err: any) {
+      alert(err);
     }
   };
   return (
-    <div className={style.calculator_main}>
-      <div className={style.calculator_main__title}>
-        <p className={style.title_text}>{preValue.current}</p>
+    <div className={style.calculator}>
+      <div className={style.calculator_header}>
+        <p className={style.calculator_header_history}>{preValue.current}</p>
       </div>
-      <div className={style.calculator_main__content}>
-        <h2 className={style.content__text}>{showValue}</h2>
+      <div className={style.calculator_main}>
+        <h2 className={style.calculator_main_content}>{showValue}</h2>
       </div>
-      <div className={style.calculator_main__bottom}>
+      <div className={style.calculator_bottom}>
         {loopIndex.map((index) => (
           <Button
             key={index}

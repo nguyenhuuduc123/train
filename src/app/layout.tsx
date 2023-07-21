@@ -1,3 +1,4 @@
+import ShowHistoryButton from "@/components/showHistory";
 import "./reset.css";
 import "./style.css";
 import { Inter } from "next/font/google";
@@ -25,7 +26,10 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ShowHistoryButton />
+        {children}
+      </body>
     </html>
   );
 }
