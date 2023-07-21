@@ -1,0 +1,14 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    font-size: 62.5%; /* 10 px */
+  }
+  body {
+    font-size: 1.6rem;
+  }
+
+a {
+    display: inline-block;
+    text-decoration: none;
+}
